@@ -1,0 +1,25 @@
+
+composer create-project --prefer-dist laravel/laravel storekeeper
+
+php artisan make:model Product -m
+php artisan make:model Sale -m
+
+
+Schema::create('products', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->integer('quantity')->default(0);
+    $table->decimal('price', 8, 2);
+    $table->timestamps();
+});
+
+Schema::create('sales', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('product_id');
+    $table->integer('quantity_sold');
+    $table->decimal('total_amount', 8, 2);
+    $table->timestamps();
+
+    $table->foreign('product_id')->references('id')->on('products');
+});
+
